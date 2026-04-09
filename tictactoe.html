@@ -85,20 +85,6 @@
       100% { transform: scale(1); }
     }
 
-    #reset {
-      margin-top: 2rem;
-      padding: 0.6rem 2rem;
-      font-size: 1rem;
-      background: #e94560;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      letter-spacing: 1px;
-      transition: background 0.15s;
-    }
-
-    #reset:hover { background: #c73652; }
   </style>
 </head>
 <body>
@@ -106,7 +92,6 @@
 
   <div id="score">
     <div class="score-box x-score">X<span id="xWins">0</span></div>
-    <div class="score-box">Draws<span id="draws">0</span></div>
     <div class="score-box o-score">O<span id="oWins">0</span></div>
   </div>
 
@@ -124,15 +109,11 @@
     <div class="cell" data-i="8"></div>
   </div>
 
-  <button id="reset">New Game</button>
-
   <script>
     const cells = document.querySelectorAll('.cell');
     const status = document.getElementById('status');
-    const resetBtn = document.getElementById('reset');
     const xWinsEl = document.getElementById('xWins');
     const oWinsEl = document.getElementById('oWins');
-    const drawsEl = document.getElementById('draws');
 
     const WINS = [
       [0,1,2],[3,4,5],[6,7,8],
@@ -172,23 +153,20 @@
         if (win) {
           gameOver = true;
           win.forEach(idx => cells[idx].classList.add('win'));
-          status.textContent = `${current} wins!`;
+          status.textContent = `${current} wins! Starting new round...`;
           score[current]++;
           xWinsEl.textContent = score.X;
           oWinsEl.textContent = score.O;
+          setTimeout(init, 1500);
         } else if (board.every(v => v)) {
-          gameOver = true;
-          status.textContent = "It's a draw!";
-          score.D++;
-          drawsEl.textContent = score.D;
+          status.textContent = "Draw! Playing again...";
+          setTimeout(init, 1000);
         } else {
           current = current === 'X' ? 'O' : 'X';
           status.textContent = `${current}'s turn`;
         }
       });
     });
-
-    resetBtn.addEventListener('click', init);
 
     init();
   </script>
